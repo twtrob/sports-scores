@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Live sports scores website">
+    <meta name="keywords" content="sports, scores, live scores">
+    <meta name="author" content="Your Name">
+    
+    <!-- Import an external stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Live Sports Scores</title>
+    <style>
+        /* Add your custom inline styles here */
+    </style>
+</head>
+<body>
+
+<div id="liveScoresContainer">
+    <!-- Live sports scores will be displayed here -->
+</div>
+
+<script>
+    // Function to fetch and display live sports scores
+    const getLiveScores = async () => {
+        try {
+            // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
+            const response = await fetch('http://api.sportradar.us/nfl/official/trial/v7/en/games/7d06369a-382a-448a-b295-6da9eab53245/boxscore.xml?api_key=');
+            const data = await response.json();
+
+            // Customize this part based on the structure of the API response
+            const liveScores = data.results.map(result => {
+                return `${result.team1} ${result.score1} - ${result.team2} ${result.score2}`;
+            });
+
+            // Display live scores in the container
+            document.getElementById('liveScoresContainer').innerHTML = liveScores.join('<br>');
+        } catch (error) {
+            console.error('Error fetching live scores:', error);
+        }
+    };
+
+    // Fetch live scores on page load
+    window.onload = getLiveScores;
+
+    // Fetch live scores periodically (e.g., every 5 minutes)
+    setInterval(getLiveScores, 5 * 60 * 1000);
+</script>
+
+</body>
+</html>
